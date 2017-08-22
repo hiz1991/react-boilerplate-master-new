@@ -12,7 +12,12 @@ import messages from './messages';
 import List from './List';
 import ListItem from './ListItem';
 import ListItemTitle from './ListItemTitle';
-
+import { Provider } from 'react-redux';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import store from './store';
+import requestVerify from './showResults';
+import MaterialUiForm from './MaterialUiForm';
 export default class FeaturePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
   // Since state and props are static,
@@ -23,63 +28,14 @@ export default class FeaturePage extends React.Component { // eslint-disable-lin
 
   render() {
     return (
-      <div>
-        <Helmet
-          title="Feature Page"
-          meta={[
-            { name: 'description', content: 'Feature page of React.js Boilerplate application' },
-          ]}
-        />
-        <H1>
-          <FormattedMessage {...messages.header} />
-        </H1>
-        <List>
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.scaffoldingHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.scaffoldingMessage} />
-            </p>
-          </ListItem>
-
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.feedbackHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.feedbackMessage} />
-            </p>
-          </ListItem>
-
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.routingHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.routingMessage} />
-            </p>
-          </ListItem>
-
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.networkHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.networkMessage} />
-            </p>
-          </ListItem>
-
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.intlHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.intlMessage} />
-            </p>
-          </ListItem>
-        </List>
-      </div>
+      <Provider store={store}>
+        <MuiThemeProvider muiTheme={getMuiTheme()}>
+          <div style={{ padding: 15 }}>
+            <h2 style={{textAlign:"center"}}>Prodigy.A.I.</h2>
+            <MaterialUiForm onSubmit={(val)=>{Contacts({})}}/>
+          </div>
+        </MuiThemeProvider>
+      </Provider>
     );
   }
 }

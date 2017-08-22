@@ -1,30 +1,31 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
+import {Field, reduxForm} from "redux-form";
 import TextField from "material-ui/TextField";
 import validate from "./validate";
 import axios from 'axios';
+import {applyRouterMiddleware, Router, browserHistory} from 'react-router';
 
 import requestVerify from './showResults';
 
 let state = {
-  showCodePart:false,
-  showFormStyle: { display: "block" },
-  hideFormStyle: { display: "none" }
+  showCodePart: false,
+  showFormStyle: {display: "block"},
+  hideFormStyle: {display: "none"}
 };
 
-const showCodeInput = function() {
-    console.log("showCodeInput")
+const showCodeInput = function () {
+  console.log("showCodeInput")
   return (state.showCodePart) ? state.showFormStyle : state.hideFormStyle;
 };
 
 const renderTextField = ({
-  inputStyle,
-  pretext,
-  input,
-  label,
-  meta: { touched, error },
-  ...custom
-}) =>
+                           inputStyle,
+                           pretext,
+                           input,
+                           label,
+                           meta: {touched, error},
+                           ...custom
+                         }) =>
   <TextField
     inputStyle={inputStyle}
     hintText={pretext}
@@ -34,56 +35,65 @@ const renderTextField = ({
     {...custom}
   />;
 
-const submi = async function(values) {
-    return requestVerify(values);
-    // console.log("values", values);
-    // let url = "/requestCode";
-    // // Assemble data
-    // const todo = {phoneNumber: values.phoneNumber};
-    // if(values.confirmationCode){
-    //     url = "/verifyCode";
-    // }
-    // // Update data
-    // return axios.post(url, todo)
-    //     .then((res) => {
-    //         console.log(res)
-    //         if(res.data.success){
-    //             if(url === "/verifyCode"){
-    //                 alert("super");
-    //             } else {
-    //                 // this.setState({ showResults: true });
-    //             }
-    //             // this.setState({ showResults: true });
-    //         }
-    //     });
+const submi = async function (values) {
+  return requestVerify(values);
+  // console.log("values", values);
+  // let url = "/requestCode";
+  // // Assemble data
+  // const todo = {phoneNumber: values.phoneNumber};
+  // if(values.confirmationCode){
+  //     url = "/verifyCode";
+  // }
+  // // Update data
+  // return axios.post(url, todo)
+  //     .then((res) => {
+  //         console.log(res)
+  //         if(res.data.success){
+  //             if(url === "/verifyCode"){
+  //                 alert("super");
+  //             } else {
+  //                 // this.setState({ showResults: true });
+  //             }
+  //             // this.setState({ showResults: true });
+  //         }
+  //     });
 
 }
 
 
-const MaterialUiForm = props => {
-  const { handleSubmit, pristine, submitting } = props;
+const MaterialUiForm = (props, context) => {
+  const {handleSubmit, pristine, submitting} = props;
   let showCode = false;
-    // onSubmit={(val)=>  {
-    //     val.preventDefault();
-    //     // let res = await submi(val);
-    //     console.log(submi(val).then(val=>{
-    //         state.showCodePart = true;
-    //         showCode = true;
-    //         console.log(val, state.showCodePart)
-    //     }))}}
+  // onSubmit={(val)=>  {
+  //     val.preventDefault();
+  //     // let res = await submi(val);
+  //     console.log(submi(val).then(val=>{
+  //         state.showCodePart = true;
+  //         showCode = true;
+  //         console.log(val, state.showCodePart)
+  //     }))}}
   return (
-    <form onSubmit={(val)=>  {
-             val.preventDefault()}}>
+    <form onSubmit={(val, some, ...args) => {
+      console.log("val, some", val, some, args);
+      val.preventDefault();
+      submi(val).then(val => {
+        if (val) {
+          browserHistory.push('/features')
+        } else {
+          alert('Could not send sms to the number!');
+        }
+      });
+    }}>
       <div>
         <Field
-          inputStyle={{ "paddingLeft": 28 }}
+          inputStyle={{"paddingLeft": 28}}
           name="phoneNumber"
           pretext="+49"
           component={renderTextField}
           label="Your phone"
         />
       </div>
-      <div style={(showCode)? state.showFormStyle :state.hideFormStyle}>
+      <div style={(showCode) ? state.showFormStyle : state.hideFormStyle}>
         <Field
           name="confirmationCode"
           component={renderTextField}

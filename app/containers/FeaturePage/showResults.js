@@ -2,7 +2,7 @@
 import axios from 'axios';
 let requestSucceeded = false;
 export default (async function requestVerify(values) {
-    console.log("values",values);
+    console.log(values);
 
   // await sleep(500); // simulate server latency
   //  window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
@@ -34,11 +34,8 @@ export default (async function requestVerify(values) {
                     }
                     // this.setState({ showResults: true });
                 }
-               if(res.error) {
-                 alert(res.error.message);
-               }
                 return res.data.success;
-            }).catch(e=>{alert(e)});
+            });
 
 });
 
