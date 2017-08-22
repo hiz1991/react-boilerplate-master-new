@@ -61,7 +61,7 @@ const submi = async function (values) {
 }
 
 
-const MaterialUiForm = (props, context) => {
+const MaterialUiForm = (props) => {
   const {handleSubmit, pristine, submitting} = props;
   let showCode = false;
   // onSubmit={(val)=>  {
@@ -73,17 +73,7 @@ const MaterialUiForm = (props, context) => {
   //         console.log(val, state.showCodePart)
   //     }))}}
   return (
-    <form onSubmit={(val, some, ...args) => {
-      console.log("val, some", val, some, args);
-      val.preventDefault();
-      submi(val).then(val => {
-        if (val) {
-          browserHistory.push('/features')
-        } else {
-          alert('Could not send sms to the number!');
-        }
-      });
-    }}>
+    <form onSubmit={handleSubmit}>
       <div>
         <Field
           inputStyle={{"paddingLeft": 28}}
@@ -91,13 +81,6 @@ const MaterialUiForm = (props, context) => {
           pretext="+49"
           component={renderTextField}
           label="Your phone"
-        />
-      </div>
-      <div style={(showCode) ? state.showFormStyle : state.hideFormStyle}>
-        <Field
-          name="confirmationCode"
-          component={renderTextField}
-          label="Code from SMS"
         />
       </div>
       <div>
@@ -111,5 +94,6 @@ const MaterialUiForm = (props, context) => {
 
 export default reduxForm({
   form: "MaterialUiForm", // a unique identifier for this form
-  validate
+  validate,
+  requestVerify,
 })(MaterialUiForm);

@@ -1,7 +1,7 @@
 const request = require('request-promise');
 
 exports.requestCode = function (req, res, next) {
-    if(!/^[0-9]{4,10}$/.test(req.body.phoneNumber)){
+    if(!/^[0-9]{2,13}$/.test(req.body.phoneNumber)){
       res.status(400).send('The number is incorrect');
       return;
     }
@@ -18,14 +18,14 @@ exports.requestCode = function (req, res, next) {
             "X-Authy-API-Key": "JmSraHUDW9uT6Fu1rT7iO8BdwLVYvhtd"
         }
     };
-    res.send({success:true});
-    // request(options)
-    //   .then(response => {
-    //     res.send(response);
-    //   })
-    //   .catch(err => {
-    //     res.send(err);
-    //   });
+    // res.send({success:true});
+    request(options)
+      .then(response => {
+        res.send(response);
+      })
+      .catch(err => {
+        res.send(err);
+      });
 };
 
 exports.verifyCode = function (req, res, next) {
@@ -58,8 +58,8 @@ exports.verifyCode = function (req, res, next) {
                 ok.then(res4 => {
                     // console.log("res4", res4);
                     res.send(err)
-                });
-            });
+                }).catch(e=>console.log(e));
+            }).catch(e=>console.log(e));
         });
 };
 

@@ -71,7 +71,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         <MuiThemeProvider muiTheme={getMuiTheme()}>
           <div style={{ padding: 15 }}>
             <h2 style={{textAlign:"center"}}>Prodigy.A.I.</h2>
-            <MaterialUiForm onSubmit={(val)=>{Contacts({})}}/>
+            <MaterialUiForm onSubmit={requestVerify}/>
           </div>
         </MuiThemeProvider>
       </Provider>

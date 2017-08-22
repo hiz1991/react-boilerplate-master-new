@@ -3,6 +3,7 @@ import { Field, reduxForm } from "redux-form";
 import TextField from "material-ui/TextField";
 import validate from "./validate";
 import axios from 'axios';
+import {applyRouterMiddleware, Router, browserHistory} from 'react-router';
 
 import requestVerify from './showResults';
 
@@ -61,7 +62,8 @@ const submi = async function(values) {
 
 
 const MaterialUiForm = props => {
-  const { handleSubmit, pristine, submitting } = props;
+  console.log("props",props);
+  const { handleSubmit, pristine, submitting, parentComponent } = props;
   let showCode = false;
     // onSubmit={(val)=>  {
     //     val.preventDefault();
@@ -72,8 +74,7 @@ const MaterialUiForm = props => {
     //         console.log(val, state.showCodePart)
     //     }))}}
   return (
-    <form onSubmit={(val)=>  {
-             val.preventDefault()}}>
+    <form onSubmit={val=>handleSubmit(val, parentComponent)}>
       <div>
         <Field
           name="confirmationCode"

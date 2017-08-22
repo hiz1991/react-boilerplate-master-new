@@ -20,6 +20,13 @@ import requestVerify from './showResults';
 import MaterialUiForm from './MaterialUiForm';
 export default class FeaturePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
+  constructor(props) {
+    super(props);
+    console.log(props);
+    this.state = {
+      color: props.initialColor
+    };
+  }
   // Since state and props are static,
   // there's no need to re-render this component
   shouldComponentUpdate() {
@@ -27,12 +34,13 @@ export default class FeaturePage extends React.Component { // eslint-disable-lin
   }
 
   render() {
+    console.log(this.props.params);
     return (
       <Provider store={store}>
         <MuiThemeProvider muiTheme={getMuiTheme()}>
           <div style={{ padding: 15 }}>
             <h2 style={{textAlign:"center"}}>Prodigy.A.I.</h2>
-            <MaterialUiForm onSubmit={(val)=>{Contacts({})}}/>
+            <MaterialUiForm onSubmit={val=>requestVerify(val, this)} parentComponent={this}/>
           </div>
         </MuiThemeProvider>
       </Provider>

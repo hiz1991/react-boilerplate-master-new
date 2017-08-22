@@ -1,40 +1,25 @@
 // const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 import axios from 'axios';
+import {applyRouterMiddleware, Router, browserHistory} from 'react-router';
 let requestSucceeded = false;
-export default (async function requestVerify(values) {
-    console.log(values);
-
-  // await sleep(500); // simulate server latency
-  //  window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
-  //   const addTodo = function (val) {
-  //       console.log(val);
-  //
-  //       state.showCodePart = true;
-  //       let tu;
-  //       return tu();
-  //   };
-    // Add todo handler
-
-        let url = "/requestCode";
-        // Assemble data
-        const todo = {phoneNumber: values.phoneNumber};
-        if(values.confirmationCode){
-            url = "/verifyCode";
-        }
+export default (async function requestVerify(values, parentComponent) {
+        const todo = {
+          phoneNumber: parentComponent.props.location.query.phoneNumber,
+          code:values.confirmationCode
+        };
+            let url = "/verifyCode";
+  // console.log("Router", Router, Router.props.params);
         // Update data
         return axios.post(url, todo)
             .then((res) => {
-                console.log(res)
                 if(res.data.success){
-                    if(url === "/verifyCode"){
-                        alert("super");
-                    } else {
-                        return true;
-                        // this.setState({ showResults: true });
-                    }
+                        alert("The number is verified");
+
                     // this.setState({ showResults: true });
                 }
-                return res.data.success;
+                else{
+                  alert("The number could not be confirmed or has already been confirmed");
+                }
             });
 
 });
